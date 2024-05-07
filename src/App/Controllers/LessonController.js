@@ -1,20 +1,18 @@
 /* eslint-disable camelcase */
 
 import * as Yup from 'yup'
-import Class from '../models/Class.js'
+import Course from '../models/Course.js'
+import Lesson from '../models/Lesson.js'
 import Module from '../models/Module.js'
 import User from '../models/User.js'
-import Weekdays from '../models/Weekdays.js'
 
-class ClassController {
+class LessonController {
   async store (request, response) {
     const schema = Yup.object().shape({ // formato do objeto abaixo:
-      module_id: Yup.number(),
+      module_id: Yup.number(), // não é obrigatório // após criar o relacionamento, alteraremos o "module: Yup.string()" para "YUP.number"
       lesson: Yup.string().required(),
       time: Yup.string().required(),
-      status: Yup.boolean(),
-      weekday_id: Yup.number() // não é obrigatório // após criar o relacionamento, alteraremos o "module: Yup.string()" para "YUP.number"
-
+      course_id: Yup.number()
     })
 
     // caso ele não atenda ao formato exigido acima ele vai dar erro conforme no UserControllers, dizendo o que está de errado
@@ -30,38 +28,41 @@ class ClassController {
       return response.status(401).json()
     }
 
-    const { module_id, lesson, time, status, weekday_id } = request.body // após criar o relacionamento, adicionamos "weekday_id"
+    const { module_id, lesson, time, course_id } = request.body // após criar o relacionamento, adicionamos "weekday_id"
 
-    const classDev = await Class.create({
+    const classDev = await Lesson.create({
       module_id, // após criar o relacionamento, criamos "module_id"
       lesson,
       time,
-      status,
-      weekday_id // após criar o relacionamento, criamos "weekday_id"
+      course_id
     })
 
     return response.json(classDev)
   }
 
   async index (request, response) {
-    const classDev = await Class.findAll({ // procure todos as aulas dentro dessa variavel //após criar o relacionamento, dentro dos parênteses vamos adicionar:
-      include: [ // vamos incluir os itens abaixo:
-        {
-          model: Weekdays, // vamos pegar do model Weekdays
-          as: 'weekday', // vamos chama-lo de weekday
-          attributes: ['id', 'name'] // e vamos pegar os itens id e name apenas
-        },
-        {
-          model: Module, // vamos pegar do model Weekdays
-          as: 'module', // vamos chama-lo de weekday
-          attributes: ['id', 'module'] // e vamos pegar os itens id e name apenas
-        }
-      ]
-    })
+    try {
+      const lessons = await Lesson.findAll({ // procure todos as aulas dentro dessa variavel //após criar o relacionamento, dentro dos parênteses vamos adicionar:
+        include: [ // vamos incluir os itens abaixo:
+          {
+            model: Module, // vamos pegar do model Weekdays
+            as: 'module', // vamos chama-lo de weekday
+            attributes: ['id', 'module'] // e vamos pegar os itens id e name apenas
+          },
+          {
+            model: Course, // vamos pegar do model Weekdays
+            as: 'course', // vamos chama-lo de weekday
+            attributes: ['id', 'course'] // e vamos pegar os itens id e name apenas
+          }
+        ]
+      })
 
-    console.log(request.userId)
+      console.log(lessons)
 
-    return response.json(classDev) // retorna todos as aulas
+      return response.json(lessons) // retorna todos as aulas
+    } catch (err) {
+      return response.status(500).json({ error: err.errors })
+    }
   }
 
   async update (request, response) { // copiamos o store lá de cima pra ficar mais prático
@@ -81,19 +82,17 @@ class ClassController {
 
     // após as validações vamos verificar se o ID digitado para a alteração é um ID válido
     const id = request.params.id
-    const classDev = await Class.findByPk(id)
+    const classDev = await Lesson.findByPk(id)
     if (!classDev) {
-      return response.status(401).json({ error: 'Make sure your class ID is correct' })
+      return response.status(401).json({ error: 'Make sure your lessons ID is correct' })
     }
 
-    const { module_id, lesson, time, status, weekday_id } = request.body
+    const { module_id, lesson, time } = request.body
 
-    await Class.update({ // aqui eu to dizendo pra ele que dentro de produtos vamos alterar os itens abaixo
+    await Lesson.update({ // aqui eu to dizendo pra ele que dentro de produtos vamos alterar os itens abaixo
       module_id, // porém como na validação não é obrigatório, o Sequelize nos ajuda com isso e entende que se não colocamos, não vamos alterar
       lesson, // qualquer um desses itens
-      time,
-      status,
-      weekday_id
+      time
     },
     { where: { id } } // aqui falamos onde vamos alterar esses dados da tabela do Class, no id 2, por exemplo.
     )
@@ -102,4 +101,4 @@ class ClassController {
   }
 }
 
-export default new ClassController()
+export default new LessonController()

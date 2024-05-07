@@ -10,6 +10,10 @@ class Weekdays extends Model {
     })
     return this
   }
+
+  static associate (models) { // reacionamento um pra muitos, 1 dia da semana pode ter tem vários aulas
+    this.hasMany(models.Lesson, { foreignKey: 'id', as: 'lesson' })
+  }
 }
 
 export default Weekdays
