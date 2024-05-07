@@ -13,7 +13,8 @@ class Module extends Model {
   }
 
   static associate (models) { // reacionamento, 1 módulo para 1 course, ou seja, um módulo não pode ter dois cursos
-    this.belongsTo(models.Course, { foreignKey: 'course_id', as: 'course' })
+    this.belongsTo(models.Course, { foreignKey: 'id', as: 'course' })
+    this.hasMany(models.Lesson, { foreignKey: 'id', as: 'lesson' })
   }
 }
 export default Module

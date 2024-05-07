@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('classes', {
+    await queryInterface.createTable('lesson', {
       id: {
         type: Sequelize.INTEGER, // número inteiro
         allowNull: false, // campo nulo = não
@@ -12,16 +12,12 @@ module.exports = {
       },
       lesson: {
         type: Sequelize.STRING,
-        allowNull: false // campo nulo = não, todos tem que ter nome da aula
+        allowNull: false, // campo nulo = não, todos tem que ter nome da aula
+        unique: true // tem que ser único, não pode ter outro aula igual
       },
       time: {
         type: Sequelize.STRING,
         allowNull: false // campo nulo = não, todos tem que ter tempo de duração
-      },
-      status: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false, // se não mandar informação nenhuma o valor dele vai ser falso
-        allowNull: false
       },
       created_at: {
         type: Sequelize.DATE,
@@ -35,6 +31,6 @@ module.exports = {
   },
 
   async down (queryInterface) {
-    await queryInterface.dropTable('classes')
+    await queryInterface.dropTable('lesson')
   }
 }

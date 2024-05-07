@@ -11,5 +11,9 @@ class Course extends Model {
     })
     return this
   }
+
+  static associate (models) { // reacionamento um pra muitos, 1 course tem vários modules
+    this.hasMany(models.Module, { foreignKey: 'id', as: 'module' })
+  }
 }
 export default Course

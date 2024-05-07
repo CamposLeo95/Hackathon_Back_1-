@@ -53,11 +53,11 @@ class ModuleController {
         ]
       })
 
-      console.log(request.userId)
+      console.log(classDev)
 
       return response.json(classDev) // retorna todos as aulas
-    } catch (error) {
-      return response.status(500).json({ error: 'Internal server error' })
+    } catch (err) {
+      return response.status(400).json({ error: err.errors })
     }
   }
 
