@@ -1,12 +1,11 @@
 import Sequelize from 'sequelize'
+import Aula from '../App/models/Aula.js'
 import Class from '../App/models/Class.js'
 import Course from '../App/models/Course.js'
 import Habits from '../App/models/Habits.js'
 import Module from '../App/models/Module.js'
 import User from '../App/models/User.js'
 import Weekdays from '../App/models/Weekdays.js'
-import database from '../config/database.js'
-import Aula from '../App/models/Aula.js'
 
 const models = [User, Class, Weekdays, Habits, Module, Course, Aula]
 class Database {
@@ -16,7 +15,7 @@ class Database {
   }
 
   init () {
-    this.connection = new Sequelize(database) // to instanciando meu sequelize // clicando o ctrl+init ali em verde ele vai pra pasta de user.js
+    this.connection = new Sequelize('postgresql://postgres:etQaFMGkKUCBlhyYSvDWVFLIRSswWvXq@viaduct.proxy.rlwy.net:27951/railway') // to instanciando meu sequelize // clicando o ctrl+init ali em verde ele vai pra pasta de user.js
     models.map(model => model.init(this.connection)).map(model => model.associate && model.associate(this.connection.models))
   } // segundo map é para fazer o relacionamento  // quero verificar dentro de cada model se existe o método associate, caso tenha (if &&) vou criar a conexão pelo
   // this.conecction.models;

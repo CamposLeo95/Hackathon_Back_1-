@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import authMiddleware from '../src/App/middleware/auth.js'
+import AulaController from './App/Controllers/AulaController.js'
 import ClassController from './App/Controllers/ClassController.js'
 import CourseController from './App/Controllers/CourseController.js'
 import HabitsController from './App/Controllers/HabitsController.js'
@@ -7,7 +8,6 @@ import ModuleController from './App/Controllers/ModuleController.js'
 import SessionController from './App/Controllers/SessionController.js'
 import UserController from './App/Controllers/UserController.js'
 import WeekdaysController from './App/Controllers/WeekdaysController.js'
-import AulaController from './App/Controllers/AulaController.js'
 
 const routes = new Router()
 
@@ -17,8 +17,6 @@ routes.get('/', (request, response) => {
 
 routes.post('/users', UserController.store)
 routes.post('/sessions', SessionController.store)
-
-
 
 routes.use(authMiddleware) // todas as rotas que tiverem abaixo disso (aqui no código) vão receber meu Middleware e será autenticado
 

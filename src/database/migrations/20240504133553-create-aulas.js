@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('aulas', {
+  async up (queryInterface, Sequelize) {
+    await queryInterface.createTable('Aulas', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -12,17 +12,17 @@ module.exports = {
       },
       module: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
 
       },
       course: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
 
       },
       lesson: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
 
       },
       time: {
@@ -38,18 +38,18 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      created_at: {
+      createdAt: {
         type: Sequelize.DATE,
         allowNull: false
       },
-      updated_at: {
+      updatedAt: {
         type: Sequelize.DATE,
         allowNull: false
       }
-    });
+    })
   },
 
-  async down(queryInterface) {
-    await queryInterface.dropTable('aulas');
+  async down (queryInterface) {
+    await queryInterface.dropTable('Aulas')
   }
-};
+}
