@@ -7,28 +7,28 @@ import User from '../models/User.js'
 import Weekdays from '../models/Weekdays.js'
 
 class ClassController {
-  async store(request, response) {
-    const schema = Yup.object().shape({ 
+  async store (request, response) {
+    const schema = Yup.object().shape({
       module_id: Yup.number(),
       lesson: Yup.string().required(),
       time: Yup.string().required(),
       status: Yup.boolean(),
-      weekday_id: Yup.number() 
-    });
-  
+      weekday_id: Yup.number()
+    })
+
     try {
-      await schema.validateSync(request.body, { abortEarly: false });
+      await schema.validateSync(request.body, { abortEarly: false })
     } catch (err) {
-      return response.status(400).json({ error: err.errors });
+      return response.status(400).json({ error: err.errors })
     }
-  
-    const { admin: isAdmin } = await User.findByPk(request.userId);
+
+    const { admin: isAdmin } = await User.findByPk(request.userId)
     if (!isAdmin) {
-      return response.status(401).json();
+      return response.status(401).json()
     }
-  
-    const { module_id, lesson, time, status, weekday_id } = request.body;
-  
+
+    const { module_id, lesson, time, status, weekday_id } = request.body
+
     try {
       const classDev = await Class.create({
         module_id,
@@ -36,29 +36,26 @@ class ClassController {
         time,
         status,
         weekday_id
-      });
-  
-      return response.json(classDev);
-    } catch (error) {
+      })
 
-      return response.status(500).json({ error: 'Ocorreu um erro ao processar a solicitação.' });
+      return response.json(classDev)
+    } catch (error) {
+      return response.status(500).json({ error: 'Ocorreu um erro ao processar a solicitação.' })
     }
   }
-  
-  
 
   async index (request, response) {
     const classDev = await Class.findAll({
-      include: [ 
+      include: [
         {
-          model: Weekdays, 
+          model: Weekdays,
           as: 'weekday',
-          attributes: ['id', 'name'] 
+          attributes: ['id', 'name']
         },
         {
-          model: Module, 
-          as: 'module', 
-          attributes: ['id', 'module'] 
+          model: Module,
+          as: 'module',
+          attributes: ['id', 'module']
         }
       ]
     })
@@ -93,18 +90,17 @@ class ClassController {
     const { module_id, lesson, time, status, weekday_id } = request.body
 
     await Class.update({
-      module_id, 
-      lesson, 
+      module_id,
+      lesson,
       time,
       status,
       weekday_id
     },
-    { where: { id } } 
+    { where: { id } }
     )
 
     return response.status(200).json({ message: 'Class was updated' })
   }
-   
 }
 
 export default new ClassController()

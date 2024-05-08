@@ -16,7 +16,7 @@ class CourseController {
       return response.status(400).json({ error: err.errors })
     }
     // verficando se a pessoa que está logado é o admin:
-    const { admin: isAdmin } = await User.findByPk(request.userId) 
+    const { admin: isAdmin } = await User.findByPk(request.userId)
     if (!isAdmin) {
       return response.status(401).json()
     }
@@ -80,7 +80,6 @@ class CourseController {
 
     }
   }
-
 }
 
 export default new CourseController()

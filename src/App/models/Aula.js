@@ -2,12 +2,12 @@ import Sequelize, { Model } from 'sequelize'
 
 class Aula extends Model {
   static init (sequelize) {
-    super.init({ 
+    super.init({
       module: Sequelize.STRING,
       course: Sequelize.STRING,
       lesson: Sequelize.STRING,
       time: Sequelize.STRING,
-      id_day: Sequelize.INTEGER, 
+      id_day: Sequelize.INTEGER,
       status: Sequelize.BOOLEAN
     },
     {

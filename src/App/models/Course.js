@@ -7,7 +7,7 @@ class Course extends Model {
     },
     {
       sequelize,
-      tableName: 'course' // Definindo o nome correto da tabela
+      tableName: 'Course' // Definindo o nome correto da tabela
     })
     return this
   }

@@ -7,7 +7,7 @@ class Module extends Model {
     },
     {
       sequelize,
-      tableName: 'module' // Definindo o nome correto da tabela
+      tableName: 'Module' // Definindo o nome correto da tabela
     })
     return this
   }
